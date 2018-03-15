@@ -1,0 +1,63 @@
+<h1 align='center'>Features</h1>
+
+<ul class="cards-content">
+% while ( my $ticket = $tickets->Next ) {
+    <li>
+        <h2><% $ticket->Subject ? $ticket->Subject : 'Ticket: ' . $ticket->Id %></h2>
+        <h3><% $ticket->FirstCustomFieldValue('Description') %></h3>
+        <form action="/NoAuth/Featured/Details.html">
+            <button type="submit" name="ticketId" value="<% $ticket->Id %>" class="button">READ!</button>
+        </form>
+    </li>
+%   if ( $ticket->FirstCustomFieldValue('Funded') ) {
+        Funded!
+%   }
+    </li>
+% }
+</ul>
+<%init>
+my $queue = RT::Queue->new(RT->SystemUser);
+my ($ret, $msg) = $queue->Load(RT->Config->Get('FeaturedTicketsQueue'));
+return ($ret, $msg) unless $ret;
+
+my $tickets = RT::Tickets->new(RT->SystemUser);
+($ret, $msg) = $tickets->LimitQueue( VALUE => $queue->Name );
+return ($ret, $msg) unless $ret;
+
+my $statuses = $queue->CustomFieldValues('Featured statuses');
+
+while (my $status = $statuses->Next() ){
+    $tickets->LimitStatus( VALUE => $status->Content);
+}
+
+if( $ARGS{Email} ){
+    my $ticket = RT::Ticket->new(RT->SystemUser);
+    ($ret, $msg) = $ticket->Load( $ARGS{ticketId} );
+    return ($ret, $msg) unless $ret;
+
+    my $sponsors = RT::CustomRole->new(RT->SystemUser);
+    ($ret, $msg) = $sponsors->Load( 'Sponsors' );
+    return ($ret, $msg) unless $ret;
+
+    my $user = RT::User->new(RT->SystemUser);
+    ($ret, $msg) = $user->LoadByEmail($ARGS{Email});
+
+    if ( !$ret ) {
+        my ($ret, $msg) = $user->Create(
+                RealName           => $ARGS{Name},
+                EmailAddress       => $ARGS{Email},
+                Address1           => $ARGS{Address},
+        );
+    return ($ret, $msg) unless $ret;
+    }
+
+    ($ret, $msg) = $ticket->AddWatcher( Type => $sponsors->GroupType, PrincipalId => $user->id );
+    RT::Logger->error('Couldn\'t Add user as new sponsor') unless $ret;
+
+    ($ret, $msg) = $ticket->Comment(
+        Content  => 'New sponsor added: ' . $ARGS{Email}
+    );
+    RT::Logger->error('Could not comment on Ticket') unless $ret;
+}
+
+</%init>
