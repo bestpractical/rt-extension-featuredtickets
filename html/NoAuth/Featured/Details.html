@@ -13,17 +13,20 @@
     <input placeholder="Name" name="Name">
     <input placeholder="Email" type="email" name="Email" required>
     <input placeholder="Address" name="Address">
-    <input name="ticketId" value="<% $ticketId %>" type="hidden">
+    <input name="ticket_id" value="<% $ticket_id %>" type="hidden">
     <input type="submit" name="Sponsor" value="Submit">
 </form>
 </div>
 
 <%init>
+# Add some code to handle no ticket id being passed.
+# Show a page with a nice message and a link back to the main page.
+
 my $ticket = RT::Ticket->new(RT->SystemUser);
-my ($ret, $msg) = $ticket->Load( $ticketId );
+my ($ret, $msg) = $ticket->Load( $ticket_id );
 return ($ret, $msg) unless $ret;
 </%init>
 
 <%args>
-$ticketId
+$ticket_id => undef
 </%args>

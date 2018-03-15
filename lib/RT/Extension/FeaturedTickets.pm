@@ -4,6 +4,8 @@ package RT::Extension::FeaturedTickets;
 
 our $VERSION = '0.01';
 
+RT->AddStyleSheets("featured-tickets.css");
+
 =head1 NAME
 
 RT-Extension-FeaturedTickets - [One line description of module's purpose here]
