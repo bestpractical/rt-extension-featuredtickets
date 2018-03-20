@@ -140,7 +140,7 @@
         <div class="pricing-table pricing-table-free">
             <div class="pricing-table-header">
                 <h2><% $ticket->Subject ? $ticket->Subject : 'Ticket: ' . $ticket->Id %></h2>
-                    <p class="feature-details"><% $ticket->FirstCustomFieldValue('Details') %></p>
+                    <p class="feature-details"><% $ticket->FirstCustomFieldValue('Description') %></p>
                 </div>
 
                 <ul class="pricing-table-list">
@@ -150,7 +150,7 @@
         <li>Funded!</li>
 %   }
                 </ul>
-%   my $args = {'ticket_id' => $ticket->Id, 'Subject' => $ticket->Subject, 'Goal' => $ticket->FirstCustomFieldValue('Goal'), 'Details' => $ticket->FirstCustomFieldValue('Details') };
+%   my $args = {'ticket_id' => $ticket->Id, 'Subject' => $ticket->Subject, 'Goal' => $ticket->FirstCustomFieldValue('Goal'), 'Details' => $ticket->FirstCustomFieldValue('Description') };
                     <button onclick="detailsClicked(<% encode_json( $args ) %>)" type="submit" class="button-choose pure-button" value="<% $ticket->Id %>" name="ticket_id">Details</button>
             </div>
         </div>
