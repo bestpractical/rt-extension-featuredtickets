@@ -6,13 +6,6 @@ our $VERSION = '0.01';
 
 RT->AddStyleSheets("featured-tickets.css");
 
-sub IsStaff {
-    my $cu = shift;
-
-    my $group = RT::Group->new($cu);
-    $group->LoadUserDefinedGroup('BPS Staff');
-    return $group->HasMemberRecursively($cu->UserObj->PrincipalObj);
-}
 
 =head1 NAME
 
