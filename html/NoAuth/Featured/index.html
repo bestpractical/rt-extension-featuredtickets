@@ -1,3 +1,4 @@
+% use utf8;
 % use JSON qw(encode_json);
 
 <!doctype html>
@@ -27,6 +28,10 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
     <![endif]-->
 <!-- Add google analytics tags here -->
+<script
+src="https://code.jquery.com/jquery-3.3.1.min.js"
+integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -50,50 +55,15 @@
         <h3 id='sponsor-details'></h3>
         <h2 id='sponsor-goal'></h2>
 
-        <div>
-            <form class='box' action="/NoAuth/Featured">
-                <input placeholder="Name" name="Name" type="text">
-                <input placeholder="Email" type="email" name="Email" required>
-                <input placeholder="Contribution Amount" name="Amount">
-                <input name="ticket_id" id='ticket_id' type="hidden">
-                <input type="submit" name="Sponsor" value="Submit">
-            </form>
-        </div>
+        <form class='box' id='sponsor-form' name='new-sponsor' onsubmit="event.preventDefault(); NewSponsor();">
+            <input placeholder="Name" name="Name" id='form-name' type="text">
+            <input placeholder="Email" type="email" id='form-email' name="Email" required>
+            <input placeholder="Contribution Amount" id='form-amount' name="Amount">
+            <input name="ticketId" id='form-ticket-id' type="hidden">
+            <button>Submit</button>
+        </form>
     </div>
 </div>
-
-<script>
-    // Get the modal
-    var modal = document.getElementById('myModal');
-
-    // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    function detailsClicked( args )  {
-        var subject = document.getElementById('sponsor-subject');
-        var details = document.getElementById('sponsor-details');
-        var goal = document.getElementById('sponsor-goal');
-        var ticket_id = document.getElementById('ticket_id');
-
-        subject.innerHTML = args['Subject'];
-        details.innerHTML = args['Details'];
-        goal.innerHTML = args['Goal'];
-
-        ticket_id.value = args['ticket_id'];
-
-        modal.style.display = "block";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-</script>
 
 <div class="l-content">
     <div class="pricing-tables pure-g">
@@ -167,7 +137,7 @@
 Header image courtesy of <a href='https://unsplash.com/@rawpixel'>@rawpixel</a> on <a href='http://unsplash.com/'>Unsplash</a>.
     </p>
 </div>
-
+<script src="/static/js/Featured.js"></script>
 </body>
 </html>
 
@@ -185,64 +155,6 @@ my $statuses = $queue->CustomFieldValues('Featured statuses');
 while (my $status = $statuses->Next() ){
     $tickets->LimitStatus( VALUE => $status->Content);
 }
-
-if( $ARGS{Email} ){
-    my $ticket = RT::Ticket->new(RT->SystemUser);
-
-    my $parent_ticket = RT::Ticket->new(RT->SystemUser);
-    ($ret, $msg) = $parent_ticket->Load( $ARGS{ticket_id} );
-
-    # If ticket fails to load, just load the page - bogus id
-    if ( $ret ) {
-
-        my $sponsors = RT::CustomRole->new(RT->SystemUser);
-        ($ret, $msg) = $sponsors->Load( 'Sponsors' );
-        return ($ret, $msg) unless $ret;
-
-        my $user = RT::User->new(RT->SystemUser);
-        ($ret, $msg) = $user->LoadByEmail($ARGS{Email});
-
-        if ( !$ret ) {
-            my ($ret, $msg) = $user->Create(
-                    RealName           => $ARGS{Name},
-                    EmailAddress       => $ARGS{Email},
-            );
-        return ($ret, $msg) unless $ret;
-        }
-
-        if ( $ARGS{Amount} > 0 ) {
-            ($ret, $msg) = $ticket->Create(
-                Subject       => $ARGS{Name} . " Sponsor Ticket For: \"". $parent_ticket->Subject ."\"",
-                Queue         => $queue->Name,
-                DependedOnBy  => $ARGS{ticket_id},
-                'CustomField-' . $ticket->LoadCustomFieldByIdentifier('Amount')->Id => $ARGS{Amount},
-            );
-            RT::Logger->error('Could Not Create Linked Ticket') unless $ret;
-
-            ($ret, $msg) = $ticket->AddWatcher( Type => $sponsors->GroupType, PrincipalId => $user->id );
-            RT::Logger->error('Couldn\'t Add user as new sponsor') unless $ret;
-        }
-
-        ($ret, $msg) = $parent_ticket->AddWatcher( Type => $sponsors->GroupType, PrincipalId => $user->id );
-        RT::Logger->debug('Couldn\'t Add user as new sponsor') unless $ret;
-
-        my $new_amount = $ARGS{Amount} + $parent_ticket->FirstCustomFieldValue('Amount');
-
-        ($ret, $msg) = $parent_ticket->AddCustomFieldValue( Field => $parent_ticket->LoadCustomFieldByIdentifier('Amount')->Id, Value => $new_amount );
-        RT::Logger->error('Could Not Set Parent Ticket New Amount Value') unless $ret;
-
-        if ( $new_amount >= $parent_ticket->FirstCustomFieldValue('Goal') ) {
-            ($ret, $msg) = $parent_ticket->AddCustomFieldValue( Field => $parent_ticket->LoadCustomFieldByIdentifier('Funded')->Id, Value => 'Funded' );
-            RT::Logger->error('Failed To Updated Funded Custom Field') unless $ret;
-        }
-
-        ($ret, $msg) = $parent_ticket->Comment(
-            Content  => 'New sponsor ' . $ARGS{Email} . ', has committed $' . $ARGS{Amount},
-        );
-        RT::Logger->error('Could not comment on Ticket') unless $ret;
-    }
-}
-
 </%init>
 
 <%args>

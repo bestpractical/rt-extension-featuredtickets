@@ -1,0 +1,68 @@
+% $m->abort;
+<%args>
+$ticket_id  => undef
+</%args>
+
+<%init>
+if( $ARGS{Email} ){
+    my $queue = RT::Queue->new(RT->SystemUser);
+    my ($ret, $msg) = $queue->Load(RT->Config->Get('FeaturedTicketsQueue'));
+    return ($ret, $msg) unless $ret;
+
+    my $ticket = RT::Ticket->new(RT->SystemUser);
+
+    my $parent_ticket = RT::Ticket->new(RT->SystemUser);
+    ($ret, $msg) = $parent_ticket->Load( $ARGS{ticket_id} );
+
+    # If ticket fails to load, just load the page - bogus id
+    if ( $ret ) {
+
+        my $sponsors = RT::CustomRole->new(RT->SystemUser);
+        ($ret, $msg) = $sponsors->Load( 'Sponsors' );
+        return ($ret, $msg) unless $ret;
+
+        my $user = RT::User->new(RT->SystemUser);
+        ($ret, $msg) = $user->LoadByEmail($ARGS{Email});
+
+        if ( !$ret ) {
+            ($ret, $msg) = $user->Create(
+                    RealName           => $ARGS{Name},
+                    EmailAddress       => $ARGS{Email},
+            );
+        return ($ret, $msg) unless $ret;
+        }
+
+        if ( $ARGS{Amount} > 0 ) {
+            ($ret, $msg) = $ticket->Create(
+                Subject       => $ARGS{Name} . " Sponsor Ticket For: \"". $parent_ticket->Subject ."\"",
+                Queue         => $queue->Name,
+                DependedOnBy  => $ARGS{ticket_id},
+                'CustomField-' . $ticket->LoadCustomFieldByIdentifier('Amount')->Id => $ARGS{Amount},
+            );
+            RT::Logger->error('Could Not Create Linked Ticket') unless $ret;
+
+            ($ret, $msg) = $ticket->AddWatcher( Type => $sponsors->GroupType, PrincipalId => $user->id );
+            RT::Logger->error('Couldn\'t Add user as new sponsor') unless $ret;
+        }
+
+        ($ret, $msg) = $parent_ticket->AddWatcher( Type => $sponsors->GroupType, PrincipalId => $user->id );
+        RT::Logger->debug('Couldn\'t Add user as new sponsor') unless $ret;
+
+        my $new_amount = $ARGS{Amount} + $parent_ticket->FirstCustomFieldValue('Amount');
+
+        ($ret, $msg) = $parent_ticket->AddCustomFieldValue( Field => $parent_ticket->LoadCustomFieldByIdentifier('Amount')->Id, Value => $new_amount );
+        RT::Logger->error('Could Not Set Parent Ticket New Amount Value') unless $ret;
+
+        if ( $new_amount >= $parent_ticket->FirstCustomFieldValue('Goal') ) {
+            ($ret, $msg) = $parent_ticket->AddCustomFieldValue( Field => $parent_ticket->LoadCustomFieldByIdentifier('Funded')->Id, Value => 'Funded' );
+            RT::Logger->error('Failed To Updated Funded Custom Field') unless $ret;
+        }
+
+        ($ret, $msg) = $parent_ticket->Comment(
+            Content  => 'New sponsor ' . $ARGS{Email} . ', has committed $' . $ARGS{Amount},
+        );
+        RT::Logger->error('Could not comment on Ticket') unless $ret;
+    }
+}
+
+</%init>
