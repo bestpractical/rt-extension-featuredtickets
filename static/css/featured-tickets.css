@@ -300,6 +300,7 @@ input {
     border: 2px solid #006699;
     background-clip: padding-box;
     text-align: center;
+    background-color: #d3dae1;
   }
 
   .sponsor-header {
