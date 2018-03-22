@@ -4,8 +4,16 @@ var modal = document.getElementById('myModal');
 // Get the button that opens the modal
 var btn = document.getElementById("myBtn");
 
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
 // Our new sponsor form
 var form = jQuery("#new-sponsor").serialize();
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
 
 // Create our new ticket for the sponsor
 function NewSponsor() {
@@ -34,7 +42,7 @@ function detailsClicked( args )  {
 
     subject.innerHTML = args['Subject'];
     details.innerHTML = args['Details'];
-    goal.innerHTML = "Goal: $" + args['Goal'];
+    goal.innerHTML = "Goal: $" + ( args['Goal'] ? args['Goal'] : 0 );
     form_ticket_id.value = args['ticket_id'];
 
     modal.style.display = "block";

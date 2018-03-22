@@ -231,6 +231,16 @@ p {
 
 }
 
+input {
+    display: block;
+    margin: 0 auto;
+    widows: 65%;
+}
+
+#sponsor-form {
+    align-content: center;
+}
+
 /*
  * -- PHONE MEDIA QUERIES --
  * On phones, we want to reduce the height and font-size of the banner further
@@ -288,7 +298,6 @@ p {
     margin: center;
     padding: 35px;
     border: 2px solid #006699;
-    border-radius: 20px/50px;
     background-clip: padding-box;
     text-align: center;
   }

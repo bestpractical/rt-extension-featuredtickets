@@ -50,17 +50,19 @@ crossorigin="anonymous"></script>
 <div id="myModal" class="modal">
     <!-- Modal content -->
     <div class="modal-content details">
+        <span class="close">&times;</span>
         <h1 class='sponsor-header'>Sponsor This Feature!</h1>
-        <h1 id='sponsor-subject'></h1>
-        <h3 id='sponsor-details'></h3>
-        <h2 id='sponsor-goal'></h2>
+        <hr>
+                <h1 id='sponsor-subject'></h1>
+                <h4 class='feature-details' id='sponsor-details'></h4>
+                <h4 id='sponsor-goal'></h4>
 
-        <form class='box' id='sponsor-form' name='new-sponsor' onsubmit="event.preventDefault(); NewSponsor();">
-            <input placeholder="Name" name="Name" id='form-name' type="text">
-            <input placeholder="Email" type="email" id='form-email' name="Email" required>
-            <input placeholder="Contribution Amount" id='form-amount' name="Amount">
-            <input name="ticketId" id='form-ticket-id' type="hidden">
-            <button>Submit</button>
+        <form id='sponsor-form' name='new-sponsor' onsubmit="event.preventDefault(); NewSponsor();">
+            <input class="sponsor-form" placeholder="Name" name="Name" id='form-name' type="text">
+            <input class="sponsor-form" placeholder="Email" type="email" id='form-email' name="Email" required>
+            <input class="sponsor-form" placeholder="Contribution Amount" id='form-amount' name="Amount">
+            <input class="sponsor-form" name="ticketId" id='form-ticket-id' type="hidden">
+            <button class="button-choose pure-button">Submit</button>
         </form>
     </div>
 </div>
