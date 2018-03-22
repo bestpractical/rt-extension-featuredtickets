@@ -9,17 +9,21 @@ var form = jQuery("#new-sponsor").serialize();
 
 // Create our new ticket for the sponsor
 function NewSponsor() {
-    var name = document.getElementById('form-name').value;
-    var email = document.getElementById('form-email').value;
-    var amount = document.getElementById('form-amount').value;
-    var ticket_id = document.getElementById('form-ticket-id').value;
+    var name = document.getElementById('form-name');
+    var email = document.getElementById('form-email');
+    var amount = document.getElementById('form-amount');
+    var ticket_id = document.getElementById('form-ticket-id');
 
     jQuery.ajax({
             type: 'POST',
-            url: "http://localhost:8080/NoAuth//Helpers/LoadObj?Name=" + name +";Email=" + email + ";Amount=" + amount + ";ticket_id="+ticket_id,
+            url: "http://localhost:8080/NoAuth//Helpers/LoadObj?Name=" + name.value +";Email=" + email.value + ";Amount=" + amount.value + ";ticket_id="+ticket_id.value,
             dataType: "json",
     });
+
     modal.style.display = "none";
+    name.value = '';
+    email.value = '';
+    amount.value = '';
 };
 
 function detailsClicked( args )  {
