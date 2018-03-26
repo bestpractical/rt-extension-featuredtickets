@@ -28,41 +28,47 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
     <![endif]-->
 <!-- Add google analytics tags here -->
-<script
-src="https://code.jquery.com/jquery-3.3.1.min.js"
-integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-crossorigin="anonymous"></script>
+<& /Elements/HeaderJavascript &>
 </head>
-<body>
+<body class="featured-tickets-body">
 
-<div class="logo">
+<div class="featured-tickets-logo">
     <a href="https://bestpractical.com" class="logo-link"><img src="https://static.bestpractical.com/bpslogo.png" alt="Best Practical Solutions logo"></a>
 </div>
 
-<div class="banner">
-    <h1 class="banner-head">
+<div class="featured-tickets-banner">
+    <h1 class="featured-tickets-banner-head">
         Request Tracker (RT)<br>
         Sponsor a feature or fix
     </h1>
 </div>
 
 <!-- The Modal -->
-<div id="myModal" class="modal">
-    <!-- Modal content -->
-    <div class="modal-content details">
-        <span class="close">&times;</span>
-        <h1 class='sponsor-header'>Sponsor This Feature!</h1>
-        <hr>
-                <h1 id='sponsor-subject'></h1>
-                <h4 class='feature-details' id='sponsor-details'></h4>
-                <h4 id='sponsor-goal'></h4>
-
-        <form id='sponsor-form' name='new-sponsor' onsubmit="event.preventDefault(); NewSponsor();">
-            <input class="sponsor-form" placeholder="Name" name="Name" id='form-name' type="text">
-            <input class="sponsor-form" placeholder="Email" type="email" id='form-email' name="Email" required>
-            <input class="sponsor-form" placeholder="Contribution Amount" id='form-amount' name="Amount">
-            <input class="sponsor-form" name="ticketId" id='form-ticket-id' type="hidden">
-            <button class="button-choose pure-button">Submit</button>
+<div class="featured-tickets-modal" id="featured-tickets-modal-modal" align='center'>
+    <div class="featured-tickets-modal-content">
+        <form class="pure-form pure-form-aligned" onsubmit="event.preventDefault(); NewSponsor();">
+            <span class="featured-tickets-modal-close"></span>
+            <h1>Sponsor This Feature!</h1>
+            <hr>
+            <h2><div id="featured-tickets-subject"></div></h2>
+            <h4><div id="featured-tickets-details"></div></h4>
+            <h4><div id="featured-tickets-goal"></div></h4>
+            <fieldset class="featured-tickets-inputs">
+                <div class="pure-control-group">
+                    <label for="featured-tickets-name">Name</label>
+                    <input id="featured-tickets-name" placeholder="Name">
+                </div>
+                <div class="pure-control-group">
+                    <label for="featured-tickets-email">Email</label>
+                    <input id="featured-tickets-email" placeholder="Email" type="email">
+                </div>
+                <div class="pure-control-group">
+                    <label for="featured-tickets-amount">Amount</label>
+                    <input id="featured-tickets-amount" placeholder="Contribution Amount">
+                </div>
+                <input id="featured-tickets-ticket-id" type="hidden">
+                <button type="submit" class="pure-button pure-button-primary">Submit</button>
+            </fieldset>
         </form>
     </div>
 </div>
@@ -74,20 +80,16 @@ crossorigin="anonymous"></script>
         <div class="pricing-table pricing-table-free">
             <div class="pricing-table-header">
                 <h2><% $ticket->Subject ? $ticket->Subject : 'Ticket: ' . $ticket->Id %></h2>
-                    <p class="feature-details"><% $ticket->FirstCustomFieldValue('Description') %></p>
+                    <p><% $ticket->FirstCustomFieldValue('Description') %></p>
                 </div>
-
-                <ul class="pricing-table-list">
-                    <li>Awesome point 1</li>
-                    <li>Awesome point 2</li>
 %   if ( $ticket->FirstCustomFieldValue('Funded') ) {
     <div class='ribbon-wrapper'>
         <div class='ribbon'>Funded!</div>
     </div>
 %   }
-                </ul>
-%   my $args = {'ticket_id' => $ticket->Id, 'Subject' => $ticket->Subject, 'Goal' => $ticket->FirstCustomFieldValue('Goal'), 'Details' => $ticket->FirstCustomFieldValue('Description') };
-                    <button onclick="detailsClicked(<% encode_json( $args ) %>)" type="submit" class="button-choose pure-button" value="<% $ticket->Id %>" name="ticket_id">Details</button>
+
+%   my $args = {'ticket_id' => $ticket->Id, 'Subject' => $ticket->Subject, 'Goal' => 'Goal: $' . ($ticket->FirstCustomFieldValue('Goal') ? $ticket->FirstCustomFieldValue('Goal') : 0), 'Details' => $ticket->FirstCustomFieldValue('Description') };
+                    <button onclick="detailsClicked(<% encode_json( $args ) %>)" type="submit" class="featured-tickets-button-choose pure-button" value="<% $ticket->Id %>" name="ticket_id">Details</button>
             </div>
         </div>
 %}
@@ -134,12 +136,11 @@ crossorigin="anonymous"></script>
     </div> <!-- end information -->
 </div> <!-- end l-content -->
 
-<div class="footer l-box">
+<div class="featured-tickets-footer l-box">
     <p>
 Header image courtesy of <a href='https://unsplash.com/@rawpixel'>@rawpixel</a> on <a href='http://unsplash.com/'>Unsplash</a>.
     </p>
 </div>
-<script src="/static/js/Featured.js"></script>
 </body>
 </html>
 

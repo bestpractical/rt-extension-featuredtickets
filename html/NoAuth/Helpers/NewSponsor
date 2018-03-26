@@ -1,9 +1,12 @@
+% $r->content_type('application/json; charset=utf-8');
+<% JSON( \@msgs ) |n %>
 % $m->abort;
 <%args>
 $ticket_id  => undef
 </%args>
 
 <%init>
+my @msgs;
 if( $ARGS{Email} ){
     my $queue = RT::Queue->new(RT->SystemUser);
     my ($ret, $msg) = $queue->Load(RT->Config->Get('FeaturedTicketsQueue'));
@@ -16,10 +19,6 @@ if( $ARGS{Email} ){
 
     # If ticket fails to load, just load the page - bogus id
     if ( $ret ) {
-
-        my $sponsors = RT::CustomRole->new(RT->SystemUser);
-        ($ret, $msg) = $sponsors->Load( 'Sponsors' );
-        return ($ret, $msg) unless $ret;
 
         my $user = RT::User->new(RT->SystemUser);
         ($ret, $msg) = $user->LoadByEmail($ARGS{Email});
@@ -34,19 +33,19 @@ if( $ARGS{Email} ){
 
         if ( $ARGS{Amount} > 0 ) {
             ($ret, $msg) = $ticket->Create(
-                Subject       => $ARGS{Name} . " Sponsor Ticket For: \"". $parent_ticket->Subject ."\"",
+                Subject       => $ARGS{Name} . "\'s Sponsor Ticket For: \"". $parent_ticket->Subject ."\"",
                 Queue         => $queue->Name,
                 DependedOnBy  => $ARGS{ticket_id},
                 'CustomField-' . $ticket->LoadCustomFieldByIdentifier('Amount')->Id => $ARGS{Amount},
             );
             RT::Logger->error('Could Not Create Linked Ticket') unless $ret;
 
-            ($ret, $msg) = $ticket->AddWatcher( Type => $sponsors->GroupType, PrincipalId => $user->id );
-            RT::Logger->error('Couldn\'t Add user as new sponsor') unless $ret;
+            ($ret, $msg) = $ticket->AddWatcher( Type => 'Requestor', PrincipalId => $user->id );
+            RT::Logger->error('Couldn\'t Add user as Requestor') unless $ret;
         }
 
-        ($ret, $msg) = $parent_ticket->AddWatcher( Type => $sponsors->GroupType, PrincipalId => $user->id );
-        RT::Logger->debug('Couldn\'t Add user as new sponsor') unless $ret;
+        ($ret, $msg) = $parent_ticket->AddWatcher( Type => 'Requestor', PrincipalId => $user->id );
+        RT::Logger->debug('Couldn\'t Add user as Requestor') unless $ret;
 
         my $new_amount = $ARGS{Amount} + $parent_ticket->FirstCustomFieldValue('Amount');
 
@@ -63,6 +62,7 @@ if( $ARGS{Email} ){
         );
         RT::Logger->error('Could not comment on Ticket') unless $ret;
     }
+    push @msgs, "Success" unless !$ret;
 }
 
 </%init>

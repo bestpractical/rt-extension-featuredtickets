@@ -5,7 +5,7 @@ package RT::Extension::FeaturedTickets;
 our $VERSION = '0.01';
 
 RT->AddStyleSheets("featured-tickets.css");
-
+RT->AddJavaScript("featured-tickets.js");
 
 =head1 NAME
 

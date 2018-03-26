@@ -2,22 +2,22 @@
  * -- BASE STYLES --
  * Most of these are inherited from Base, but I want to change a few.
  */
-body {
+ .featured-tickets-body {
     color: #526066;
     background: #E8E8E8;
 }
 
-h2, h3 {
+.featured-tickets-h2, featured-tickets-h3 {
     letter-spacing: 0.25em;
     text-transform: uppercase;
     font-weight: 600;
 }
 
-p {
+.featured-tickets-p {
     line-height: 1.6em;
 }
 
-.logo {
+.featured-tickets-logo {
     position: absolute;
     width 183px;
     margin-left: -92px;
@@ -57,7 +57,7 @@ p {
  * vertically center the text.
  */
 
-.banner {
+.featured-tickets-banner {
     background: transparent 
      url('/static/images/rawpixel-com-250087-unsplash.jpg') 0 0 no-repeat fixed;
     text-align: center;
@@ -69,7 +69,7 @@ p {
     display: table;
 }
 
-.banner-head {
+.featured-tickets-banner-head {
     display: table-cell;
     vertical-align: middle;
     margin-bottom: 0;
@@ -135,7 +135,7 @@ p {
 
 }
 
-.feature-details {
+.featured-tickets-details {
     padding-left: 2em;
     padding-right: 2em;
 }
@@ -189,7 +189,7 @@ p {
  * Styles for the "Choose" button at the bottom of a pricing table.
  * This inherits from Pure Button.
  */
-.button-choose {
+.featured-tickets-button-choose {
     border: 1px solid #ccc;
     background: #fff;
     color: #333;
@@ -199,12 +199,12 @@ p {
     bottom: -1.5em;
 }
 
-.information-head {
+.featured-tickets-information-head {
     color: black;
     font-weight: 500;
 }
 
-.footer {
+.featured-tickets-footer {
     background: #111;
     color: #888;
     text-align: center;
@@ -231,13 +231,14 @@ p {
 
 }
 
-input {
+.featured-tickets-input {
     display: block;
     margin: 0 auto;
     widows: 65%;
 }
 
-#sponsor-form {
+.featured-tickets-form {
+    padding: 5px;
     align-content: center;
 }
 
@@ -256,7 +257,7 @@ input {
 /*
  * -- DETAILS POP-UP --
  */
- .modal {
+ .featured-tickets-modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -270,36 +271,54 @@ input {
 }
 
 /* Modal Content/Box */
-.modal-content {
+.featured-tickets-modal-content {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    border: 2px solid #006699;
+    width: 60%; /* Could be more or less, depending on screen size */
 }
 
+.featured-tickets-modal-content h2 {
+    letter-spacing: 0em;
+    text-transform: none;
+    font-weight: 600;
+    color: #006699;
+}
 /* The Close Button */
-.close {
-    color: #aaa;
+.featured-tickets-modal-close {
     float: right;
-    font-size: 28px;
-    font-weight: bold;
+    position: relative;
+    top: -51px;
+    right: -30px;
+    display: block;
+    width: 30px;
+    height: 30px;
+    text-indent: -9999px;
+    background: url(../../../static/css/images/jquery-modal-close.png) no-repeat 0 0;
 }
 
-.close:hover,
-.close:focus {
+.featured-tickets-modal-close:hover,
+.featured-tickets-modal-close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
     }
 
- .details {
+ .featured-tickets-input {
+     width: 50%;
+ }
+
+ .pure-form-aligned .pure-control-group label {
+     width: 3em;
+ }
+
+ .featured-tickets-details {
     width: 50%;
     margin: center;
     padding: 35px;
     border: 2px solid #006699;
     background-clip: padding-box;
-    text-align: center;
     background-color: #d3dae1;
   }
 
@@ -317,8 +336,8 @@ input {
     height: 88px;
     overflow: hidden;
     position: absolute;
-    top: -3px;
-    right: -3px;
+    top: 0px;
+    right: 0px;
     }
 
  .ribbon {
