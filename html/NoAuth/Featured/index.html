@@ -30,7 +30,7 @@
 <!-- Add google analytics tags here -->
 <& /Elements/HeaderJavascript &>
 </head>
-<body class="featured-tickets-body">
+<body class="featured-tickets-body" id="featured-tickets-body">
 
 <div class="featured-tickets-logo">
     <a href="https://bestpractical.com" class="logo-link"><img src="https://static.bestpractical.com/bpslogo.png" alt="Best Practical Solutions logo"></a>
@@ -47,9 +47,7 @@
 <div class="featured-tickets-modal" id="featured-tickets-modal-modal" align='center'>
     <div class="featured-tickets-modal-content">
         <form class="pure-form pure-form-aligned" onsubmit="event.preventDefault(); NewSponsor();">
-            <span class="featured-tickets-modal-close"></span>
-            <h1>Sponsor This Feature!</h1>
-            <hr>
+            <span class="featured-tickets-modal-close" id="featured-tickets-modal-close"></span>
             <h2><div id="featured-tickets-subject"></div></h2>
             <h4><div id="featured-tickets-details"></div></h4>
             <h4><div id="featured-tickets-goal"></div></h4>
@@ -67,7 +65,7 @@
                     <input id="featured-tickets-amount" placeholder="Contribution Amount">
                 </div>
                 <input id="featured-tickets-ticket-id" type="hidden">
-                <button type="submit" class="pure-button pure-button-primary">Submit</button>
+                <button type="submit" class="featured-tickets-button-choose pure-button">Submit</button>
             </fieldset>
         </form>
     </div>
@@ -80,14 +78,13 @@
         <div class="pricing-table pricing-table-free">
             <div class="pricing-table-header">
                 <h2><% $ticket->Subject ? $ticket->Subject : 'Ticket: ' . $ticket->Id %></h2>
-                    <p><% $ticket->FirstCustomFieldValue('Description') %></p>
                 </div>
 %   if ( $ticket->FirstCustomFieldValue('Funded') ) {
     <div class='ribbon-wrapper'>
         <div class='ribbon'>Funded!</div>
     </div>
 %   }
-
+<p><% $ticket->FirstCustomFieldValue('Description') %></p>
 %   my $args = {'ticket_id' => $ticket->Id, 'Subject' => $ticket->Subject, 'Goal' => 'Goal: $' . ($ticket->FirstCustomFieldValue('Goal') ? $ticket->FirstCustomFieldValue('Goal') : 0), 'Details' => $ticket->FirstCustomFieldValue('Description') };
                     <button onclick="detailsClicked(<% encode_json( $args ) %>)" type="submit" class="featured-tickets-button-choose pure-button" value="<% $ticket->Id %>" name="ticket_id">Details</button>
             </div>
@@ -153,10 +150,10 @@ my $tickets = RT::Tickets->new(RT->SystemUser);
 ($ret, $msg) = $tickets->LimitQueue( VALUE => $queue->Name );
 return ($ret, $msg) unless $ret;
 
-my $statuses = $queue->CustomFieldValues('Featured statuses');
+my @statuses = RT->Config->Get('FeaturedTicketStatuses');
 
-while (my $status = $statuses->Next() ){
-    $tickets->LimitStatus( VALUE => $status->Content);
+for my $status (@statuses) {
+    $tickets->LimitStatus( VALUE => $status->[0]);
 }
 </%init>
 

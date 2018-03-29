@@ -12,15 +12,18 @@ jQuery(document).ready(function() {
     // Get the modal
     modal = document.getElementById('featured-tickets-modal-modal');
 
+    FeaturedTicketsPage = document.getElementById('featured-tickets-body');
+
     // Get the <span> element that closes the modal
-    span = document.getElementsByClassName("featured-tickets-modal-close")[0];
+    FeaturedTicketSpan = document.getElementById('featured-tickets-modal-close');
 
     // Our new sponsor form
     form = jQuery("#new-sponsor").serialize();
 
     // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
+    FeaturedTicketSpan.onclick = function() {
         modal.style.display = "none";
+        FeaturedTicketsPage.style.overflow = 'auto';
     }
 });
 
@@ -47,6 +50,8 @@ function NewSponsor() {
     });
 
     modal.style.display = "none";
+    FeaturedTicketsPage.style.overflow = 'auto';
+
     sponsor_name.value = '';
     email.value = '';
     amount.value = '';
@@ -65,11 +70,13 @@ function detailsClicked( args )  {
     form_ticket_id.value = args['ticket_id'];
 
     modal.style.display = "block";
+    FeaturedTicketsPage.style.overflow = 'hidden';
 }
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
+        FeaturedTicketsPage.style.overflow = 'auto';
     }
 }
