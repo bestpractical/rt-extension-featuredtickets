@@ -1,16 +1,12 @@
 use strict;
 use warnings;
 
-my $QueueName = RT->Config->Get('FeaturedTicketsQueue');
+my $QueueName = 'FeaturedTickets';
 our @CustomFields;
 
-our @CustomRoles = (
-    {
-        Name        => 'Sponsors',
-        Description => 'Sponsors for Feature',
-        ApplyTo     => $QueueName,
-    },
-);
+our @Queues = ({
+    Name => 'FeaturedTickets',
+});
 
 @CustomFields = (
     {
@@ -38,26 +34,10 @@ our @CustomRoles = (
          ApplyTo     => $QueueName,
     },
     {
-         Name        =>'Details',
+         Name        =>'Description',
          Type        =>'Text',
          LookupType  =>'RT::Queue-RT::Ticket',
          Description =>'Details On Feature',
-         ApplyTo     => $QueueName,
-    },
-     {
-         Name        =>'Featured Statuses',
-         Type        =>'SelectMultiple',
-         RenderType  =>'List',
-         Values      => [
-             { Name =>'New', SortOrder => 1 },
-             { Name =>'Open', SortOrder => 2 },
-             { Name =>'Resolved', SortOrder => 3 },
-             { Name =>'Stalled', SortOrder => 4 },
-             { Name =>'Rejected', SortOrder => 5 },
-             { Name =>'Deleted', SortOrder => 6 },
-         ],
-         LookupType  =>'RT::Queue',
-         Description =>'Statuses of Tickets in Queue that will be displayed',
          ApplyTo     => $QueueName,
     },
 );
