@@ -1,15 +1,33 @@
 NAME
-    RT-Extension-FeaturedTickets - [One line description of module's purpose
-    here]
+    RT-Extension-FeaturedTickets - Generate public web page for featured
+    tickets.
 
 DESCRIPTION
-    [Why would someone install this extension? What does it do? What problem
-    does it solve?]
+    Create a webpage that anyone can view (NoAuth), displaying details on
+    featured tickets. A visitor can decide to sign up as a requestor on a
+    linked ticket in the same queue. The tickets featured can be selected
+    from a queue and limited to their statuses.
+
+Configuration
+    Will need to specify two config variables for the extension:
+
+        Set($FeaturedTicketsQueue, 'FeaturedTickets');
+
+    $FeaturedTicketsQueue specifies which queue the featured tickets will be
+    loaded from, when the initialdata is loaded the 'FeaturedTickets' queue
+    is created by default. Renaming this queue is the simplest way to use
+    another queue name but keep the relevant applied custom fields.
+
+        Set($FeaturedTicketStatuses, ['open', ...]);
+
+    $FeaturedTicketStatuses is an array ref, where the ticket statuses that
+    will be accepted from the $FeaturedTicketsQueue are specified. Only
+    tickets with one of the statuses in the array will be listed on the
+    featured page. It is advisable not to use 'new' as an accepted status,
+    or sponsored tickets will also be displayed.
 
 RT VERSION
-    Works with RT [What versions of RT is this known to work with?]
-
-    [Make sure to use requires_rt and rt_too_new in Makefile.PL]
+    Works with RT 4.4
 
 INSTALLATION
     perl Makefile.PL
@@ -18,16 +36,15 @@ INSTALLATION
         May need root permissions
 
     Edit your /opt/rt4/etc/RT_SiteConfig.pm
-        If you are using RT 4.2 or greater, add this line:
+        Activate the plugin by adding the below:
 
             Plugin('RT::Extension::FeaturedTickets');
 
-        For RT 4.0, add this line:
-
-            Set(@Plugins, qw(RT::Extension::FeaturedTickets));
-
         or add RT::Extension::FeaturedTickets to your existing @Plugins
         line.
+
+    Insert into database
+            make initdb
 
     Clear your mason cache
             rm -rf /opt/rt4/var/mason_data/obj
@@ -47,7 +64,7 @@ BUGS
         L<rt.cpan.org|http://rt.cpan.org/Public/Dist/Display.html?Name=RT-Extension-FeaturedTickets>.
 
 LICENSE AND COPYRIGHT
-    This software is Copyright (c) 2018 by Craig
+    This software is Copyright (c) 2018 by Best Practical Solutions, LLC.
 
     This is free software, licensed under:
 

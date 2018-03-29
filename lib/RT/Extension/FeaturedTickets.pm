@@ -9,18 +9,34 @@ RT->AddJavaScript("featured-tickets.js");
 
 =head1 NAME
 
-RT-Extension-FeaturedTickets - [One line description of module's purpose here]
+RT-Extension-FeaturedTickets - Generate public web page for featured tickets.
 
 =head1 DESCRIPTION
 
-[Why would someone install this extension? What does it do? What problem
-does it solve?]
+Create a webpage that anyone can view (NoAuth), displaying details on featured tickets. A visitor
+can decide to sign up as a requestor on a linked ticket in the same queue. The tickets featured
+can be selected from a queue and limited to their statuses.
+
+=head1 Configuration
+
+Will need to specify two config variables for the extension:
+
+    Set($FeaturedTicketsQueue, 'FeaturedTickets');
+
+$FeaturedTicketsQueue specifies which queue the featured tickets will be loaded from, when
+the initialdata is loaded the 'FeaturedTickets' queue is created by default. Renaming this queue is the simplest
+way to use another queue name but keep the relevant applied custom fields.
+
+    Set($FeaturedTicketStatuses, ['open', ...]);
+
+$FeaturedTicketStatuses is an array ref, where the ticket statuses that will be accepted from the $FeaturedTicketsQueue
+are specified. Only tickets with one of the statuses in the array will be listed on the featured page. It is advisable
+not to use 'new' as an accepted status, or sponsored tickets will also be displayed.
 
 =head1 RT VERSION
 
-Works with RT [What versions of RT is this known to work with?]
+Works with RT 4.4
 
-[Make sure to use requires_rt and rt_too_new in Makefile.PL]
 
 =head1 INSTALLATION
 
@@ -36,15 +52,15 @@ May need root permissions
 
 =item Edit your F</opt/rt4/etc/RT_SiteConfig.pm>
 
-If you are using RT 4.2 or greater, add this line:
+Activate the plugin by adding the below:
 
     Plugin('RT::Extension::FeaturedTickets');
 
-For RT 4.0, add this line:
-
-    Set(@Plugins, qw(RT::Extension::FeaturedTickets));
-
 or add C<RT::Extension::FeaturedTickets> to your existing C<@Plugins> line.
+
+=item Insert into database
+
+    make initdb
 
 =item Clear your mason cache
 
@@ -70,7 +86,7 @@ or via the web at
 
 =head1 LICENSE AND COPYRIGHT
 
-This software is Copyright (c) 2018 by Craig
+This software is Copyright (c) 2018 by Best Practical Solutions, LLC.
 
 This is free software, licensed under:
 
