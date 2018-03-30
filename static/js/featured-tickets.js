@@ -1,32 +1,3 @@
-var modal;
-var span;
-var form;
-var span;
-var name;
-var email;
-var amount;
-var ticket_id;
-var data;
-
-jQuery(document).ready(function() {
-    // Get the modal
-    modal = document.getElementById('featured-tickets-modal-modal');
-
-    FeaturedTicketsPage = document.getElementById('featured-tickets-body');
-
-    // Get the <span> element that closes the modal
-    FeaturedTicketSpan = document.getElementById('featured-tickets-modal-close');
-
-    // Our new sponsor form
-    form = jQuery("#new-sponsor").serialize();
-
-    // When the user clicks on <span> (x), close the modal
-    FeaturedTicketSpan.onclick = function() {
-        modal.style.display = "none";
-        FeaturedTicketsPage.style.overflow = 'auto';
-    }
-});
-
 // Create our new ticket for the sponsor
 function NewSponsor() {
     sponsor_name = document.getElementById('featured-tickets-name');
@@ -49,7 +20,11 @@ function NewSponsor() {
             }
     });
 
-    modal.style.display = "none";
+    var FeaturedTicketsModal = document.getElementById('featured-tickets-modal-modal');
+    var FeaturedTicketsPage = document.getElementById('featured-tickets-body');
+    var FeaturedTicketSpan = document.getElementById('featured-tickets-modal-close');
+
+    FeaturedTicketsModal.style.display = "none";
     FeaturedTicketsPage.style.overflow = 'auto';
 
     sponsor_name.value = '';
@@ -69,14 +44,24 @@ function detailsClicked( args )  {
     goal.innerHTML = args['Goal'];
     form_ticket_id.value = args['ticket_id'];
 
-    modal.style.display = "block";
-    FeaturedTicketsPage.style.overflow = 'hidden';
-}
+    var FeaturedTicketsPage = document.getElementById('featured-tickets-body');
+    var FeaturedTicketsModal = document.getElementById('featured-tickets-modal-modal');
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
+
+    FeaturedTicketsModal.style.display = "block";
+    FeaturedTicketsPage.style.overflow = 'hidden';
+
+    FeaturedTicketSpan.onclick = function() {
         modal.style.display = "none";
         FeaturedTicketsPage.style.overflow = 'auto';
+    }
+
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == FeaturedTicketsModal) {
+            modal.style.display = "none";
+            FeaturedTicketsPage.style.overflow = 'auto';
+        }
     }
 }
