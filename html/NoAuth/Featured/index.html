@@ -65,7 +65,7 @@
                     <input id="featured-tickets-amount" placeholder="Contribution Amount">
                 </div>
                 <input id="featured-tickets-ticket-id" type="hidden">
-                <button type="submit" class="featured-tickets-button-choose pure-button">Submit</button>
+                <button type="submit" class="featured-tickets-button-choose pure-button">Close</button>
             </fieldset>
         </form>
     </div>
@@ -79,7 +79,7 @@
             <div class="pricing-table-header">
                 <h2><% $ticket->Subject ? $ticket->Subject : 'Ticket: ' . $ticket->Id %></h2>
                 </div>
-%   if ( $ticket->FirstCustomFieldValue('Funded') ) {
+%   if ( $ticket->FirstCustomFieldValue('Funded') eq 'Funded' ) {
     <div class='ribbon-wrapper'>
         <div class='ribbon'>Funded!</div>
     </div>
