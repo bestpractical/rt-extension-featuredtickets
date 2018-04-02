@@ -14,6 +14,10 @@ function NewSponsor() {
             data: data,
             success: function( data ) {
                 console.log('AJAX call to NewSponsor created new sponsor ticket');
+                jQuery('body').prepend('<div class="featured-tickets-flash" id="flash"></div>');
+                jQuery('#flash').html('Thanks for your pledge of support! You\'ll receive an email soon with more details.');
+                jQuery('#flash').slideDown('slow');
+                jQuery('#flash').click(function () { jQuery('#flash').toggle('highlight') });
             },
             error: function () {
                 console.log('An error occured with NewSponsor create');
@@ -46,21 +50,20 @@ function detailsClicked( args )  {
 
     var FeaturedTicketsPage = document.getElementById('featured-tickets-body');
     var FeaturedTicketsModal = document.getElementById('featured-tickets-modal-modal');
-
+    var FeaturedTicketSpan = document.getElementById('featured-tickets-modal-close');
 
     FeaturedTicketsModal.style.display = "block";
     FeaturedTicketsPage.style.overflow = 'hidden';
 
     FeaturedTicketSpan.onclick = function() {
-        modal.style.display = "none";
+        FeaturedTicketsModal.style.display = "none";
         FeaturedTicketsPage.style.overflow = 'auto';
     }
-
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
         if (event.target == FeaturedTicketsModal) {
-            modal.style.display = "none";
+            FeaturedTicketsModal.style.display = "none";
             FeaturedTicketsPage.style.overflow = 'auto';
         }
     }
