@@ -302,6 +302,10 @@
     background: url(../../../static/css/images/jquery-modal-close.png) no-repeat 0 0;
 }
 
+.featured-tickets-modal-submitted {
+    display: none;
+}
+
 .featured-tickets-modal-close:hover,
 .featured-tickets-modal-close:focus {
     color: black;

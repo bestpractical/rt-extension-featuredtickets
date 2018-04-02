@@ -14,19 +14,31 @@ function NewSponsor() {
             data: data,
             success: function( data ) {
                 console.log('AJAX call to NewSponsor created new sponsor ticket');
-                jQuery('body').prepend('<div class="featured-tickets-flash" id="flash"></div>');
-                jQuery('#flash').html('Thanks for your pledge of support! You\'ll receive an email soon with more details.');
-                jQuery('#flash').slideDown('slow');
-                jQuery('#flash').click(function () { jQuery('#flash').toggle('highlight') });
             },
             error: function () {
                 console.log('An error occured with NewSponsor create');
             }
     });
+    FeaturedTicketsSubmitSponsor();
+}
 
+function FeaturedTicketsSubmitSponsor() {
+    var FeaturedTicketsModalUnsubmitted = document.getElementById('featured-tickets-modal-unsubmitted');
+    var FeaturedTicketsModalSubmitted = document.getElementById('featured-tickets-modal-submitted');
+
+    FeaturedTicketsModalUnsubmitted.style.display = "none";
+    FeaturedTicketsModalSubmitted.style.display = "unset";
+}
+
+function FeaturedTicketsHideModal() {
     var FeaturedTicketsModal = document.getElementById('featured-tickets-modal-modal');
     var FeaturedTicketsPage = document.getElementById('featured-tickets-body');
     var FeaturedTicketSpan = document.getElementById('featured-tickets-modal-close');
+    var FeaturedTicketsModalUnsubmitted = document.getElementById('featured-tickets-modal-unsubmitted');
+    var FeaturedTicketsModalSubmitted = document.getElementById('featured-tickets-modal-submitted');
+
+    FeaturedTicketsModalUnsubmitted.style.display = "unset";
+    FeaturedTicketsModalSubmitted.style.display = "none";
 
     FeaturedTicketsModal.style.display = "none";
     FeaturedTicketsPage.style.overflow = 'auto';
