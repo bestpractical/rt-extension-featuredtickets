@@ -93,10 +93,12 @@
     </div>
 %   }
 <p><% $ticket->FirstCustomFieldValue('Description') %></p>
-%   my $args = {'ticket_id' => $ticket->Id, 'Subject' => $ticket->Subject, 'Goal' => 'Goal: $' . ($ticket->FirstCustomFieldValue('Goal') ? $ticket->FirstCustomFieldValue('Goal') : 0), 'Description' => $ticket->FirstCustomFieldValue('Description'), 'Details' => $ticket->FirstCustomFieldValue('Details') };
-                    <button onclick="detailsClicked(<% encode_json( $args ) %>)" type="submit" class="featured-tickets-button-choose pure-button" value="<% $ticket->Id %>" name="ticket_id">Details</button>
             </div>
+        <div class='detail-stuff'>
+%   my $args = {'ticket_id' => $ticket->Id, 'Subject' => $ticket->Subject, 'Goal' => 'Goal: $' . ($ticket->FirstCustomFieldValue('Goal') ? $ticket->FirstCustomFieldValue('Goal') : 0), 'Description' => $ticket->FirstCustomFieldValue('Description'), 'Details' => $ticket->FirstCustomFieldValue('Details') };
+        <button onclick="detailsClicked(<% encode_json( $args ) %>)" type="submit" class="featured-tickets-button-choose pure-button" value="<% $ticket->Id %>" name="ticket_id">Details</button>
         </div>
+    </div>
 %}
     </div> <!-- end pricing-tables -->
 

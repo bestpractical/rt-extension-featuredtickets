@@ -105,6 +105,8 @@
     padding: 0 0 1em;
     position: relative;
     background-color: lightgray;
+    overflow: auto;
+    height: 10em;
 }
 
 /*
@@ -198,6 +200,7 @@
     color: #333;
     border-radius: 2em;
     font-weight: bold;
+    top: 5px;
     position: relative;
 }
 
