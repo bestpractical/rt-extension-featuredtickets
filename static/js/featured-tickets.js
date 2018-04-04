@@ -81,4 +81,9 @@ function detailsClicked( args )  {
             FeaturedTicketsPage.style.overflow = 'auto';
         }
     }
+    jQuery(document).keydown(function(event) {
+        if (event.keyCode == 27) {
+            FeaturedTicketsModal.style.display = "none";
+            FeaturedTicketsPage.style.overflow = 'auto';}
+      });
 }
