@@ -55,6 +55,7 @@
             <form class="pure-form pure-form-aligned" onsubmit="event.preventDefault(); NewSponsor();">
                 <span class="featured-tickets-modal-close" id="featured-tickets-modal-close"></span>
                 <h2><div id="featured-tickets-subject"></div></h2>
+                <h4><div id="featured-tickets-description"></div></h4>
                 <h4><div id="featured-tickets-details"></div></h4>
                 <h4><div id="featured-tickets-goal"></div></h4>
                 <fieldset class="featured-tickets-inputs">
@@ -92,7 +93,7 @@
     </div>
 %   }
 <p><% $ticket->FirstCustomFieldValue('Description') %></p>
-%   my $args = {'ticket_id' => $ticket->Id, 'Subject' => $ticket->Subject, 'Goal' => 'Goal: $' . ($ticket->FirstCustomFieldValue('Goal') ? $ticket->FirstCustomFieldValue('Goal') : 0), 'Details' => $ticket->FirstCustomFieldValue('Description') };
+%   my $args = {'ticket_id' => $ticket->Id, 'Subject' => $ticket->Subject, 'Goal' => 'Goal: $' . ($ticket->FirstCustomFieldValue('Goal') ? $ticket->FirstCustomFieldValue('Goal') : 0), 'Description' => $ticket->FirstCustomFieldValue('Description'), 'Details' => $ticket->FirstCustomFieldValue('Details') };
                     <button onclick="detailsClicked(<% encode_json( $args ) %>)" type="submit" class="featured-tickets-button-choose pure-button" value="<% $ticket->Id %>" name="ticket_id">Details</button>
             </div>
         </div>

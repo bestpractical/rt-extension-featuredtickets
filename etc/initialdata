@@ -37,7 +37,14 @@ our @Queues = ({
          Name        =>'Description',
          Type        =>'Text',
          LookupType  =>'RT::Queue-RT::Ticket',
-         Description =>'Details On Feature',
+         Description =>'Description Of Feature, shown on modal and main page.',
+         ApplyTo     => $QueueName,
+    },
+    {
+         Name        =>'Details',
+         Type        =>'Text',
+         LookupType  =>'RT::Queue-RT::Ticket',
+         Description =>'Details On Feature, shown only in modal',
          ApplyTo     => $QueueName,
     },
 );

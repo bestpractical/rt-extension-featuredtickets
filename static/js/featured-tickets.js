@@ -51,11 +51,13 @@ function FeaturedTicketsHideModal() {
 
 function detailsClicked( args )  {
     var subject = document.getElementById('featured-tickets-subject');
+    var description = document.getElementById('featured-tickets-description');
     var details = document.getElementById('featured-tickets-details');
     var goal = document.getElementById('featured-tickets-goal');
     var form_ticket_id = document.getElementById('featured-tickets-ticket-id');
 
     subject.innerHTML = args['Subject'];
+    description.innerHTML = args['Description'];
     details.innerHTML = args['Details'];
     goal.innerHTML = args['Goal'];
     form_ticket_id.value = args['ticket_id'];
