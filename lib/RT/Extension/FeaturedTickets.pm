@@ -33,6 +33,10 @@ $FeaturedTicketStatuses is an array ref, where the ticket statuses that will be 
 are specified. Only tickets with one of the statuses in the array will be listed on the featured page. It is advisable
 not to use 'new' as an accepted status, or sponsored tickets will also be displayed.
 
+    Set($SponsorsQueue, 'Sponsors');
+
+Lastly need to set which queue new sponsor tickets will be placed into with the $SponsorsQueue variable.
+
 =head1 RT VERSION
 
 Works with RT 4.4

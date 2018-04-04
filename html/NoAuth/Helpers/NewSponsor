@@ -34,7 +34,7 @@ if( $ARGS{Email} ){
         if ( $ARGS{Amount} > 0 ) {
             ($ret, $msg) = $ticket->Create(
                 Subject       => $ARGS{Name} . "\'s Sponsor Ticket For: \"". $parent_ticket->Subject ."\"",
-                Queue         => $queue->Name,
+                Queue         => RT->Config->Get('SponsorsQueue'),
                 DependedOnBy  => $ARGS{ticket_id},
                 'CustomField-' . $ticket->LoadCustomFieldByIdentifier('Amount')->Id => $ARGS{Amount},
             );
