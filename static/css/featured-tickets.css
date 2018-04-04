@@ -306,6 +306,10 @@
     display: none;
 }
 
+.featured-tickets-modal-submitted h2{
+    color: black;
+}
+
 .featured-tickets-modal-close:hover,
 .featured-tickets-modal-close:focus {
     color: black;
