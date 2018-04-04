@@ -9,33 +9,7 @@ RT->AddJavaScript("featured-tickets.js");
 
 =head1 NAME
 
-RT-Extension-FeaturedTickets - Generate public web page for featured tickets.
-
-=head1 DESCRIPTION
-
-Create a webpage that anyone can view (NoAuth), displaying details on featured tickets. A visitor
-can decide to sign up as a requestor on a linked ticket in the same queue. The tickets featured
-can be selected from a queue and limited to their statuses.
-
-=head1 Configuration
-
-Will need to specify two config variables for the extension:
-
-    Set($FeaturedTicketsQueue, 'FeaturedTickets');
-
-$FeaturedTicketsQueue specifies which queue the featured tickets will be loaded from, when
-the initialdata is loaded the 'FeaturedTickets' queue is created by default. Renaming this queue is the simplest
-way to use another queue name but keep the relevant applied custom fields.
-
-    Set($FeaturedTicketStatuses, ['open', ...]);
-
-$FeaturedTicketStatuses is an array ref, where the ticket statuses that will be accepted from the $FeaturedTicketsQueue
-are specified. Only tickets with one of the statuses in the array will be listed on the featured page. It is advisable
-not to use 'new' as an accepted status, or sponsored tickets will also be displayed.
-
-    Set($SponsorsQueue, 'Sponsors');
-
-Lastly need to set which queue new sponsor tickets will be placed into with the $SponsorsQueue variable.
+RT-Extension-FeaturedTickets -Public web page for featured tickets.
 
 =head1 RT VERSION
 
@@ -52,7 +26,10 @@ Works with RT 4.4
 
 =item C<make install>
 
+=item C<make initdb>
+
 May need root permissions
+
 
 =item Edit your F</opt/rt4/etc/RT_SiteConfig.pm>
 
@@ -62,9 +39,20 @@ Activate the plugin by adding the below:
 
 or add C<RT::Extension::FeaturedTickets> to your existing C<@Plugins> line.
 
-=item Insert into database
+$FeaturedTicketsQueue specifies which queue the featured tickets will be loaded from when
+the initial data is loaded the 'FeaturedTickets' queue is created by default. Renaming this queue is the simplest
+way to use another queue name but keep the relevant applied custom fields.
 
-    make initdb
+    Set($FeaturedTicketsQueue, 'FeaturedTickets');
+
+$FeaturedTicketStatuses is an array ref, where the ticket statuses that will be accepted from the $FeaturedTicketsQueue
+are specified. Only tickets with one of the statuses in the array will be listed on the featured page.
+
+    Set($FeaturedTicketStatuses, ['open', ...]);
+
+Set which queue new sponsor tickets will be placed into with the $SponsorsQueue variable.
+
+    Set($SponsorsQueue, 'Sponsors');
 
 =item Clear your mason cache
 
@@ -73,6 +61,14 @@ or add C<RT::Extension::FeaturedTickets> to your existing C<@Plugins> line.
 =item Restart your webserver
 
 =back
+
+=head1 DESCRIPTION
+
+Create a webpage that anyone can view (NoAuth), displaying details on featured tickets. A visitor
+can decide to sign up as a requestor on a linked ticket in the same queue. The tickets featured
+can be selected from a queue and limited to their statuses.
+
+
 
 =head1 AUTHOR
 
