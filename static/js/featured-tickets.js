@@ -49,6 +49,13 @@ function FeaturedTicketsHideModal() {
     ticket_id = '';
 }
 
+function truncate(string){
+    if (string.length > 5)
+       return string.substring(0,5)+'...';
+    else
+       return string;
+ };
+
 function detailsClicked( args )  {
     var subject = document.getElementById('featured-tickets-subject');
     var description = document.getElementById('featured-tickets-description');

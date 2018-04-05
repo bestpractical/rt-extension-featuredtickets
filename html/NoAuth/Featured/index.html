@@ -61,15 +61,15 @@
                 <fieldset class="featured-tickets-inputs">
                     <div class="pure-control-group">
                         <label for="featured-tickets-name">Name</label>
-                        <input id="featured-tickets-name" placeholder="Name">
+                        <input class="featured-tickets-inputs"id="featured-tickets-name" placeholder="Name">
                     </div>
                     <div class="pure-control-group">
                         <label for="featured-tickets-email">Email</label>
-                        <input id="featured-tickets-email" placeholder="Email" type="email" required>
+                        <input class="featured-tickets-inputs" id="featured-tickets-email" placeholder="Email" type="email" required>
                     </div>
                     <div class="pure-control-group">
                         <label for="featured-tickets-amount">Amount</label>
-                        <input id="featured-tickets-amount" placeholder="Contribution Amount">
+                        <input class="featured-tickets-inputs" id="featured-tickets-amount" placeholder="Contribution Amount">
                     </div>
                     <input id="featured-tickets-ticket-id" type="hidden">
                     <button type="submit" class="featured-tickets-button-choose pure-button">Submit</button>
@@ -92,11 +92,17 @@
         <div class='ribbon'>Funded!</div>
     </div>
 %   }
-<p><% $ticket->FirstCustomFieldValue('Description') %></p>
+    <p>
+% if ( length($ticket->FirstCustomFieldValue('Description')) > 140 ) {
+    <% substr $ticket->FirstCustomFieldValue('Description'), 0, 140 %> ...
+% } else {
+    <% $ticket->FirstCustomFieldValue('Description') %>
+% }
+    </p>
 %   my $args = {'ticket_id' => $ticket->Id, 'Subject' => $ticket->Subject, 'Goal' => 'Goal: $' . ($ticket->FirstCustomFieldValue('Goal') ? $ticket->FirstCustomFieldValue('Goal') : 0), 'Description' => $ticket->FirstCustomFieldValue('Description'), 'Details' => $ticket->FirstCustomFieldValue('Details') };
-        <button onclick="detailsClicked(<% encode_json( $args ) %>)" type="submit" class="featured-tickets-button-choose pure-button" value="<% $ticket->Id %>" name="ticket_id">Details</button>
-        </div>
     </div>
+    <button onclick="detailsClicked(<% encode_json( $args ) %>)" type="submit" class="featured-tickets-button-choose featured-tickets-button-page pure-button" value="<% $ticket->Id %>" name="ticket_id">Details</button>
+</div>
 %}
     </div> <!-- end pricing-tables -->
 </div>

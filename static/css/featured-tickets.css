@@ -200,8 +200,11 @@
     color: #333;
     border-radius: 2em;
     font-weight: bold;
-    top: 80%;
     position: sticky;
+}
+
+.featured-tickets-button-page {
+    margin-top: -120px;
 }
 
 .featured-tickets-information-head {
@@ -254,7 +257,13 @@
     .banner-head {
         font-size: 3em;
     }
+}
 
+@media (max-width: 450px) {
+    .featured-tickets-inputs {
+        width: 70%;
+    }
+}
 /*
  * -- DETAILS POP-UP --
  */
@@ -376,17 +385,4 @@
     -moz-box-shadow: 0px 0px 3px rgba(51, 30, 170, 0.3);
     box-shadow: 0px 0px 3px rgba(51, 30, 170, 0.3);
     }
-
- .featured-tickets-flash {
-     background: #006699;
-     text-align: center;
-     width: 30%;
-     position: absolute;
-     color:white;
-     border-radius:10px;
-     font-family:Tahoma,Geneva,Arial,sans-serif;font-size:11px;
-     padding:10px 10px 10px 10px;
-     margin:10px;
-     font-size: medium;
- }
 }
