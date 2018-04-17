@@ -170,8 +170,17 @@ my @statuses = RT->Config->Get('FeaturedTicketStatuses');
 for my $status (@statuses) {
     $tickets->LimitStatus( VALUE => $status->[0]);
 }
+
+($ret, $msg) = $tickets->LimitCustomField(
+    CUSTOMFIELD => 'Feature Type',
+    OPERATOR    => 'LIKE',
+    VALUE       => $feature_type,
+    QUEUE       => $queue,
+);
+return ($ret, $msg) unless $ret;
 </%init>
 
 <%args>
-$ticket_id => undef
+$ticket_id     => undef
+$feature_type  => 'RT'
 </%args>

@@ -47,4 +47,15 @@ our @Queues = ({
          Description =>'Details On Feature, shown only in modal',
          ApplyTo     => $QueueName,
     },
+    {
+        Name        =>'Feature Type',
+        Type        =>'SelectSingle',
+        LookupType  =>'RT::Queue-RT::Ticket',
+        Description =>'Where the feature applies to.',
+        ApplyTo     => $QueueName,
+        Values      => [
+            { Name => 'RT' },
+            { Name => 'RTIR' },
+        ],
+    },
 );
