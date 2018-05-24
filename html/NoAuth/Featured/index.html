@@ -159,25 +159,34 @@ Header image courtesy of <a href='https://unsplash.com/@rawpixel'>@rawpixel</a> 
 <%init>
 my $queue = RT::Queue->new(RT->SystemUser);
 my ($ret, $msg) = $queue->Load(RT->Config->Get('FeaturedTicketsQueue'));
-return ($ret, $msg) unless $ret;
+
+RT::Logger->error("Unable to load Feature Tickets Queue "
+    . RT->Config->Get('FeaturedTicketsQueue') . " $msg") unless $ret;
 
 my $tickets = RT::Tickets->new(RT->SystemUser);
-($ret, $msg) = $tickets->LimitQueue( VALUE => $queue->Name );
-return ($ret, $msg) unless $ret;
+if ( $queue->Id ){
+    $tickets->LimitQueue( VALUE => $queue->Id );
 
-my @statuses = RT->Config->Get('FeaturedTicketStatuses');
+    my $statuses = RT->Config->Get('FeaturedTicketStatuses');
 
-for my $status (@statuses) {
-    $tickets->LimitStatus( VALUE => $status->[0]);
+    foreach my $status (@$statuses) {
+        $tickets->LimitStatus( VALUE => $status );
+    }
+
+    # Limit feature to RT or RTIR, if provided
+    $tickets->LimitCustomField(
+        CUSTOMFIELD => 'Feature Type',
+        OPERATOR    => '=',
+        VALUE       => $feature_type,
+        QUEUE       => $queue->Id,
+    );
+}
+else{
+    # If we didn't load a feature ticket queue, don't show anything
+    RT::Logger->error("Unable to load featured tickets. Did you set \$FeaturedTicketsQueue in RT_SiteConfig.pm?");
+    $tickets->FromSQL('id=0');
 }
 
-($ret, $msg) = $tickets->LimitCustomField(
-    CUSTOMFIELD => 'Feature Type',
-    OPERATOR    => 'LIKE',
-    VALUE       => $feature_type,
-    QUEUE       => $queue,
-);
-return ($ret, $msg) unless $ret;
 </%init>
 
 <%args>
