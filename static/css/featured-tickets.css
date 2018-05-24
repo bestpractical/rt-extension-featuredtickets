@@ -3,7 +3,7 @@
  * Most of these are inherited from Base, but I want to change a few.
  */
  .featured-tickets-body {
-    color: black;
+/*    color: black;  */
     background: #FAFAFA;
 }
 
@@ -49,6 +49,24 @@
     padding: .5em .7em;
 }
 
+h2, h3 {
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+p {
+    line-height: 1.6em;
+}
+
+body {
+    color: #526066;
+}
+
+.information-head {
+    color: black;
+    font-weight: 500;
+}
 
 /*
  * -- BANNER --
