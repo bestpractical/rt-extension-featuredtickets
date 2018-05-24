@@ -16,7 +16,9 @@ our @Queues = ({
          Description =>'If The Goal Has Been Met',
          ApplyTo     => $QueueName,
          Values      => [
+             { Name => 'Unfunded' },
              { Name => 'Funded' },
+             { Name => 'Partially Funded' },
          ],
     },
     {

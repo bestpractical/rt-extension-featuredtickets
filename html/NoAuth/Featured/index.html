@@ -92,6 +92,12 @@
         <div class='ribbon'>Funded!</div>
     </div>
 %   }
+%   if ( $ticket->FirstCustomFieldValue('Funded')
+%        && $ticket->FirstCustomFieldValue('Funded') eq 'Partially Funded' ) {
+    <div class='ribbon-wrapper'>
+        <div class='ribbon'>Partially Funded!</div>
+    </div>
+%   }
     <p>
 % if ( length($ticket->FirstCustomFieldValue('Description')) > 140 ) {
     <% substr $ticket->FirstCustomFieldValue('Description'), 0, 140 %> ...
