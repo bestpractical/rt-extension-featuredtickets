@@ -30,29 +30,11 @@ Works with RT 4.4
 
 May need root permissions
 
-
 =item Edit your F</opt/rt4/etc/RT_SiteConfig.pm>
 
 Activate the plugin by adding the below:
 
     Plugin('RT::Extension::FeaturedTickets');
-
-or add C<RT::Extension::FeaturedTickets> to your existing C<@Plugins> line.
-
-$FeaturedTicketsQueue specifies which queue the featured tickets will be loaded from when
-the initial data is loaded the 'FeaturedTickets' queue is created by default. Renaming this queue is the simplest
-way to use another queue name but keep the relevant applied custom fields.
-
-    Set($FeaturedTicketsQueue, 'FeaturedTickets');
-
-$FeaturedTicketStatuses is an array ref, where the ticket statuses that will be accepted from the $FeaturedTicketsQueue
-are specified. Only tickets with one of the statuses in the array will be listed on the featured page.
-
-    Set($FeaturedTicketStatuses, ['open', ...]);
-
-Set which queue new sponsor tickets will be placed into with the $SponsorsQueue variable.
-
-    Set($SponsorsQueue, 'Sponsors');
 
 =item Clear your mason cache
 
@@ -68,7 +50,38 @@ Create a webpage that anyone can view (NoAuth), displaying details on featured t
 can decide to sign up as a requestor on a linked ticket in the same queue. The tickets featured
 can be selected from a queue and limited to their statuses.
 
+=head1 CONFIGURATION
 
+This extension requires settings for a few configuration items to work properly.
+
+=head2 C<$FeaturedTicketsQueue>
+
+C<$FeaturedTicketsQueue> specifies which queue the featured tickets will be loaded from.
+During installation, a queue called 'FeaturedTickets' is created by default. Renaming
+this queue is the simplest way to use another queue name but keep the relevant applied
+custom fields.
+
+    Set($FeaturedTicketsQueue, 'FeaturedTickets');
+
+=head2 C<$FeaturedTicketStatuses>
+
+C<$FeaturedTicketStatuses> sets the list of tickets statuses of tickets that should be displayed on
+the public page. Only tickets with one of the statuses in the array will be shown.
+
+    Set($FeaturedTicketStatuses, ['open', ...]);
+
+=head2 C<$SponsorsQueue>
+
+When a sponsor signs up for a ticket, a new ticket is created in this queue with the new sponsor
+as the Requestor.
+
+    Set($SponsorsQueue, 'Sponsors');
+
+=head2 Custom Fields
+
+There are several custom fields that are used to create the content for each item on the public
+page. These are created when you run C<make initdb>. Feature Type also needs to be set to see tickets
+on the public page and it defaults to 'RT'.
 
 =head1 AUTHOR
 
