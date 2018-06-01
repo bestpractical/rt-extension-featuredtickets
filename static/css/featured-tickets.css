@@ -2,15 +2,10 @@
  * -- BASE STYLES --
  * Most of these are inherited from Base, but I want to change a few.
  */
- .featured-tickets-body {
+.featured-tickets-body {
 /*    color: black;  */
     background: #FAFAFA;
-}
-
-.featured-tickets-h2, featured-tickets-h3 {
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    font-weight: 600;
+    color: #526066;
 }
 
 .featured-tickets-p {
@@ -49,18 +44,14 @@
     padding: .5em .7em;
 }
 
-h2, h3 {
+h2.featured-tickets-heading, h3.featured-tickets-heading {
     letter-spacing: 0.25em;
     text-transform: uppercase;
     font-weight: 600;
 }
 
-p {
+p.featured-tickets-paragraph {
     line-height: 1.6em;
-}
-
-body {
-    color: #526066;
 }
 
 .information-head {
