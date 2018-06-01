@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package RT::Extension::FeaturedTickets;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 RT->AddStyleSheets("featured-tickets.css");
 RT->AddJavaScript("featured-tickets.js");
