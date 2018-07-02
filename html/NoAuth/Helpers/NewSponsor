@@ -37,11 +37,9 @@ if( $ARGS{Email} ){
                 Queue         => RT->Config->Get('SponsorsQueue'),
                 DependedOnBy  => $ARGS{ticket_id},
                 'CustomField-' . $ticket->LoadCustomFieldByIdentifier('Amount')->Id => $ARGS{Amount},
+                Requestor     => $user->EmailAddress,
             );
             RT::Logger->error('Could Not Create Linked Ticket') unless $ret;
-
-            ($ret, $msg) = $ticket->AddWatcher( Type => 'Requestor', PrincipalId => $user->id );
-            RT::Logger->error('Couldn\'t Add user as Requestor') unless $ret;
         }
 
         ($ret, $msg) = $parent_ticket->AddWatcher( Type => 'Requestor', PrincipalId => $user->id );
