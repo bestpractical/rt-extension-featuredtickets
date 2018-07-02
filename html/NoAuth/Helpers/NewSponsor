@@ -42,9 +42,6 @@ if( $ARGS{Email} ){
             RT::Logger->error('Could Not Create Linked Ticket') unless $ret;
         }
 
-        ($ret, $msg) = $parent_ticket->AddWatcher( Type => 'Requestor', PrincipalId => $user->id );
-        RT::Logger->debug('Couldn\'t Add user as Requestor') unless $ret;
-
         my $new_amount = $ARGS{Amount} + $parent_ticket->FirstCustomFieldValue('Amount');
 
         ($ret, $msg) = $parent_ticket->AddCustomFieldValue( Field => $parent_ticket->LoadCustomFieldByIdentifier('Amount')->Id, Value => $new_amount );
