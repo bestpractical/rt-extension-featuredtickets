@@ -1,5 +1,8 @@
 Revision history for RT-Extension-FeaturedTickets
 
+0.03 2018-07-02
+ - Update setting of requestor when handling a new sponsor
+
 0.02 2018-06-01
  - Style updates
 
