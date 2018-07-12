@@ -13,10 +13,10 @@ function NewSponsor() {
             dataType: "json",
             data: data,
             success: function( data ) {
-                console.log('AJAX call to NewSponsor created new sponsor ticket');
+                // console.log('AJAX call to NewSponsor created new sponsor ticket');
             },
             error: function () {
-                console.log('An error occured with NewSponsor create');
+                // console.log('An error occured with NewSponsor create');
             }
     });
     FeaturedTicketsSubmitSponsor();
