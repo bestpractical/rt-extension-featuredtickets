@@ -1,5 +1,4 @@
 % use utf8;
-% use JSON qw(encode_json);
 
 <!doctype html>
 <html lang="en">
@@ -107,7 +106,7 @@
     </p>
 %   my $args = {'ticket_id' => $ticket->Id, 'Subject' => $ticket->Subject, 'Goal' => 'Goal: $' . ($ticket->FirstCustomFieldValue('Goal') ? $ticket->FirstCustomFieldValue('Goal') : 0), 'Description' => $ticket->FirstCustomFieldValue('Description'), 'Details' => $ticket->FirstCustomFieldValue('Details') };
     </div>
-    <button onclick="detailsClicked(<% encode_json( $args ) %>)" type="submit" class="featured-tickets-button-choose featured-tickets-button-page pure-button" value="<% $ticket->Id %>" name="ticket_id">Details</button>
+    <button onclick="detailsClicked(<% RT::Interface::Web::EncodeJSON( $args ) %>)" type="submit" class="featured-tickets-button-choose featured-tickets-button-page pure-button" value="<% $ticket->Id %>" name="ticket_id">Details</button>
 </div>
 %}
     </div> <!-- end pricing-tables -->
