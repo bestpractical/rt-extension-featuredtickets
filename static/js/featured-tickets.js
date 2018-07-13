@@ -12,7 +12,7 @@ function NewSponsor() {
 
     jQuery.ajax({
         type: 'POST',
-        url: "/NoAuth/Helpers/NewSponsor",
+        url: RT.Config.WebPath + "/NoAuth/Helpers/NewSponsor",
         dataType: "json",
         data: data,
         success: function( data ) {
