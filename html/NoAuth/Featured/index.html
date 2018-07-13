@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A list of proposed features for Request Tracker (RT) available for sponsorship.">
-    <title>Request Tracker Sponsored Features</title>
+    <title><&|/l&>Request Tracker Sponsored Features</&></title>
     
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
     
@@ -38,8 +38,8 @@
 
 <div class="featured-tickets-banner">
     <h1 class="featured-tickets-banner-head">
-        Request Tracker (RT)<br>
-        Sponsor a feature or fix
+        <&|/l&>Request Tracker (RT)</&><br>
+        <&|/l&>Sponsor a feature or fix</&>
     </h1>
 </div>
 
@@ -47,9 +47,9 @@
 <div class="featured-tickets-modal" id="featured-tickets-modal-modal" align='center'>
     <div class="featured-tickets-modal-content">
         <div class="featured-tickets-modal-submitted" id="featured-tickets-modal-submitted">
-            <h2 class="featured-tickets-heading">Thanks for your pledge of support!</h2>
-            <h2 class="featured-tickets-heading">You'll receive an email soon with more details.</h2>
-            <button onclick="FeaturedTicketsHideModal();" class="featured-tickets-button-choose pure-button">Close</button>
+            <h2 class="featured-tickets-heading"><&|/l&>Thanks for your pledge of support!</&></h2>
+            <h2 class="featured-tickets-heading"><&|/l&>You'll receive an email soon with more details.</&></h2>
+            <button onclick="FeaturedTicketsHideModal();" class="featured-tickets-button-choose pure-button"><&|/l&>Close</&></button>
         </div>
         <div id="featured-tickets-modal-unsubmitted">
             <form class="pure-form pure-form-aligned" onsubmit="event.preventDefault(); NewSponsor();">
@@ -61,19 +61,19 @@
                 <div class="error"></div>
                 <fieldset class="featured-tickets-inputs">
                     <div class="pure-control-group">
-                        <label for="featured-tickets-name">Name</label>
-                        <input class="featured-tickets-inputs"id="featured-tickets-name" placeholder="Name">
+                        <label for="featured-tickets-name"><&|/l&>Name</&></label>
+                        <input class="featured-tickets-inputs"id="featured-tickets-name" placeholder="<&|/l&>Name</&>">
                     </div>
                     <div class="pure-control-group">
-                        <label for="featured-tickets-email">Email</label>
-                        <input class="featured-tickets-inputs" id="featured-tickets-email" placeholder="Email" type="email" required>
+                        <label for="featured-tickets-email"><&|/l&>Email</&></label>
+                        <input class="featured-tickets-inputs" id="featured-tickets-email" placeholder="<&|/l&>Email</&>" type="email" required>
                     </div>
                     <div class="pure-control-group">
-                        <label for="featured-tickets-amount">Amount</label>
-                        <input class="featured-tickets-inputs" id="featured-tickets-amount" placeholder="Contribution Amount">
+                        <label for="featured-tickets-amount"><&|/l&>Amount</&></label>
+                        <input class="featured-tickets-inputs" id="featured-tickets-amount" placeholder="<&|/l&>Contribution Amount</&>">
                     </div>
                     <input id="featured-tickets-ticket-id" type="hidden">
-                    <button type="submit" class="featured-tickets-button-choose pure-button">Submit</button>
+                    <button type="submit" class="featured-tickets-button-choose pure-button"><&|/l&>Submit</&></button>
                 </fieldset>
             </form>
         </div>
@@ -90,13 +90,13 @@
                 </div>
 %   if ( $ticket->FirstCustomFieldValue('Funded') && $ticket->FirstCustomFieldValue('Funded') eq 'Funded' ) {
     <div class='ribbon-wrapper'>
-        <div class='ribbon'>Funded!</div>
+        <div class='ribbon'><&|/l&>Funded</&>!</div>
     </div>
 %   }
 %   if ( $ticket->FirstCustomFieldValue('Funded')
 %        && $ticket->FirstCustomFieldValue('Funded') eq 'Partially Funded' ) {
     <div class='ribbon-wrapper'>
-        <div class='ribbon'>Partially Funded!</div>
+        <div class='ribbon'><&|/l&>Partially Funded</&>!</div>
     </div>
 %   }
     <p class="featured-tickets-paragraph">
@@ -108,7 +108,7 @@
     </p>
 %   my $args = {'ticket_id' => $ticket->Id, 'Subject' => $ticket->Subject, 'Goal' => 'Goal: $' . ($ticket->FirstCustomFieldValue('Goal') ? $ticket->FirstCustomFieldValue('Goal') : 0), 'Description' => $ticket->FirstCustomFieldValue('Description'), 'Details' => $ticket->FirstCustomFieldValue('Details') };
     </div>
-    <button onclick="detailsClicked(<% RT::Interface::Web::EncodeJSON( $args ) %>)" type="submit" class="featured-tickets-button-choose featured-tickets-button-page pure-button" value="<% $ticket->Id %>" name="ticket_id">Details</button>
+    <button onclick="detailsClicked(<% RT::Interface::Web::EncodeJSON( $args ) %>)" type="submit" class="featured-tickets-button-choose featured-tickets-button-page pure-button" value="<% $ticket->Id %>" name="ticket_id"><&|/l&>Details</&></button>
 </div>
 %}
     </div> <!-- end pricing-tables -->
@@ -117,36 +117,36 @@
     <div class="information pure-g">
         <div class="pure-u-1 pure-u-md-1-2">
             <div class="l-box">
-                <h3 class="information-head featured-tickets-heading">What is this page?</h3>
+                <h3 class="information-head featured-tickets-heading"><&|/l&>What is this page?</&></h3>
                 <p class="featured-tickets-paragraph">
-                    As an open source product, the majority of the new features we add to Request Tracker are sponsored by users just like you. When we talk to organizations who use RT, we often share our product roadmap to provide options for sponsorship in the core product. We wanted to find a way to share these product ideas with a wider audience, so we created this page to make it easier for supporters to see new features we'd like to build into RT and RTIR.
+                    <&|/l&>As an open source product, the majority of the new features we add to Request Tracker are sponsored by users just like you. When we talk to organizations who use RT, we often share our product roadmap to provide options for sponsorship in the core product. We wanted to find a way to share these product ideas with a wider audience, so we created this page to make it easier for supporters to see new features we'd like to build into RT and RTIR.</&>
                 </p>
             </div>
         </div>
 
         <div class="pure-u-1 pure-u-md-1-2">
             <div class="l-box">
-                <h3 class="information-head featured-tickets-heading">When can I have it?</h3>
+                <h3 class="information-head featured-tickets-heading"><&|/l&>When can I have it?</&></h3>
                 <p class="featured-tickets-paragraph">
-                     Smaller features and bug fixes are included in the next point release in the current stable release. For larger features, we typically target the next minor series, and we can also provide you with an extension that is compatible with the current stable release. (Versions consist of a major series, minor series and point release. RT 4.4.2 is major series 4, minor series 4, and point release 2.) 
+                     <&|/l&>Smaller features and bug fixes are included in the next point release in the current stable release. For larger features, we typically target the next minor series, and we can also provide you with an extension that is compatible with the current stable release. (Versions consist of a major series, minor series and point release. RT 4.4.2 is major series 4, minor series 4, and point release 2.)</&>
                 </p>
             </div>
         </div>
 
         <div class="pure-u-1 pure-u-md-1-2">
             <div class="l-box">
-                <h3 class="information-head featured-tickets-heading">What happens after I sponsor?</h3>
+                <h3 class="information-head featured-tickets-heading"><&|/l&>What happens after I sponsor?</&></h3>
                 <p class="featured-tickets-paragraph">
-                    Once you sign up to sponsor a feature, we'll be in touch to discuss our development process, scheduling, payment, and answer any other questions you have. 
+                    <&|/l&>Once you sign up to sponsor a feature, we'll be in touch to discuss our development process, scheduling, payment, and answer any other questions you have.</&>
                 </p>
             </div>
         </div>
 
         <div class="pure-u-1 pure-u-md-1-2">
             <div class="l-box">
-                <h3 class="information-head featured-tickets-heading">My feature isn't here</h3>
+                <h3 class="information-head featured-tickets-heading"><&|/l&>My feature isn't here</&></h3>
                 <p class="featured-tickets-paragraph">
-                    We offer a wide variety of <a href="https://bestpractical.com/services">services</a> for RT, including <a href="https://bestpractical.com/support">product support</a>, <a href="https://bestpractical.com/training">training</a>, and <a href="https://bestpractical.com/services/">development</a>. If you'd like to sponsor the development of a feature not included here, or are seeking joint sponsorship of a feature for RT, please <a href="mailto:contact@bestpractical.com">contact us</a>.
+                    <&|/l_unsafe, q[<a href="https://bestpractical.com/services">], q[<a href="https://bestpractical.com/support">], q[<a href="https://bestpractical.com/training"], q[<a href="https://bestpractical.com/services/">], q[<a href="mailto:contact@bestpractical.com">], q[</a>] &>We offer a wide variety of [_1]services[_6] for RT, including [_2]product support[_6], [_3]>training[_6], and [_4]development[_6]. If you'd like to sponsor the development of a feature not included here, or are seeking joint sponsorship of a feature for RT, please [_5]contact us[_6].</&>
                 </p>
             </div>
         </div>
