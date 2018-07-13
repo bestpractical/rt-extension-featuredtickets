@@ -7,19 +7,27 @@ function NewSponsor() {
 
     data = { "Name" : sponsor_name.value, "Email" : email.value, "Amount" : amount.value, "ticket_id" : ticket_id.value };
 
+    jQuery('div.featured-tickets-modal div.error').text('').hide();
+
     jQuery.ajax({
-            type: 'POST',
-            url: "/NoAuth/Helpers/NewSponsor",
-            dataType: "json",
-            data: data,
-            success: function( data ) {
+        type: 'POST',
+        url: "/NoAuth/Helpers/NewSponsor",
+        dataType: "json",
+        data: data,
+        success: function( data ) {
+            if ( data.status == 'success' ) {
                 // console.log('AJAX call to NewSponsor created new sponsor ticket');
-            },
-            error: function () {
-                // console.log('An error occured with NewSponsor create');
+                jQuery('div.featured-tickets-modal div.error').text('').fadeOut();
+                FeaturedTicketsSubmitSponsor();
             }
+            else {
+                jQuery('div.featured-tickets-modal div.error').text(data.message).fadeIn();
+            }
+        },
+        error: function () {
+            // console.log('An error occured with NewSponsor create');
+        }
     });
-    FeaturedTicketsSubmitSponsor();
 }
 
 function FeaturedTicketsSubmitSponsor() {

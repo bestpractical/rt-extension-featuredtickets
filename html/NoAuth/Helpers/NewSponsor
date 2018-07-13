@@ -1,63 +1,97 @@
-% $r->content_type('application/json; charset=utf-8');
-<% JSON( \@msgs ) |n %>
-% $m->abort;
-<%args>
-$ticket_id  => undef
-</%args>
-
 <%init>
-my @msgs;
-if( $ARGS{Email} ){
-    my $queue = RT::Queue->new(RT->SystemUser);
-    my ($ret, $msg) = $queue->Load(RT->Config->Get('FeaturedTicketsQueue'));
-    return ($ret, $msg) unless $ret;
+$r->content_type('application/json; charset=utf-8');
 
-    my $ticket = RT::Ticket->new(RT->SystemUser);
-
-    my $parent_ticket = RT::Ticket->new(RT->SystemUser);
-    ($ret, $msg) = $parent_ticket->Load( $ARGS{ticket_id} );
-
-    # If ticket fails to load, just load the page - bogus id
-    if ( $ret ) {
-
-        my $user = RT::User->new(RT->SystemUser);
-        ($ret, $msg) = $user->LoadByEmail($ARGS{Email});
-
-        if ( !$ret ) {
-            ($ret, $msg) = $user->Create(
-                    RealName           => $ARGS{Name},
-                    EmailAddress       => $ARGS{Email},
-            );
-        return ($ret, $msg) unless $ret;
-        }
-
-        if ( $ARGS{Amount} > 0 ) {
-            ($ret, $msg) = $ticket->Create(
-                Subject       => $ARGS{Name} . "\'s Sponsor Ticket For: \"". $parent_ticket->Subject ."\"",
-                Queue         => RT->Config->Get('SponsorsQueue'),
-                DependedOnBy  => $ARGS{ticket_id},
-                'CustomField-' . $ticket->LoadCustomFieldByIdentifier('Amount')->Id => $ARGS{Amount},
-                Requestor     => $user->EmailAddress,
-            );
-            RT::Logger->error('Could Not Create Linked Ticket') unless $ret;
-        }
-
-        my $new_amount = $ARGS{Amount} + $parent_ticket->FirstCustomFieldValue('Amount');
-
-        ($ret, $msg) = $parent_ticket->AddCustomFieldValue( Field => $parent_ticket->LoadCustomFieldByIdentifier('Amount')->Id, Value => $new_amount );
-        RT::Logger->error('Could Not Set Parent Ticket New Amount Value') unless $ret;
-
-        if ( $new_amount >= $parent_ticket->FirstCustomFieldValue('Goal') ) {
-            ($ret, $msg) = $parent_ticket->AddCustomFieldValue( Field => $parent_ticket->LoadCustomFieldByIdentifier('Funded')->Id, Value => 'Funded' );
-            RT::Logger->error('Failed To Updated Funded Custom Field') unless $ret;
-        }
-
-        ($ret, $msg) = $parent_ticket->Comment(
-            Content  => 'New sponsor ' . $ARGS{Email} . ', has committed $' . $ARGS{Amount},
-        );
-        RT::Logger->error('Could not comment on Ticket') unless $ret;
+for my $field ( qw/ticket_id Email Amount/ ) {
+    if ( !$ARGS{$field} ) {
+        $m->out( JSON( { status => 'error', message => loc( 'Missing argument [_1]', loc( $field ) ) } ) );
+        $m->abort;
     }
-    push @msgs, "Success" unless !$ret;
 }
 
+if ( $ARGS{Amount} =~ qr/^\s*(\d+(?:\.\d*)?)\s*$/ ) {
+    $ARGS{Amount} = $1;
+    $ARGS{Amount} =~ s!\.$!!;    # remove trailing dot
+    if ( $ARGS{Amount} <= 0 ) {
+        $m->out( JSON( { status => 'error', message => loc( 'Invalid argument [_1]', loc( 'Amount' ) ) } ) );
+        $m->abort;
+    }
+}
+else {
+    $m->out( JSON( { status => 'error', message => loc( 'Invalid argument [_1]', loc( 'Amount' ) ) } ) );
+    $m->abort;
+}
+
+my @addresses = Email::Address::List->parse( $ARGS{Email} );
+
+if ( @addresses == 1 && Scalar::Util::blessed( $addresses[ 0 ]->{value} ) ) {
+    $ARGS{Email} = $addresses[ 0 ]->{value}->address;
+}
+else {
+    $m->out( JSON( { status => 'error', message => loc( 'Invalid argument [_1]', loc( 'Email' ) ) } ) );
+    $m->abort;
+}
+
+my $parent_ticket = RT::Ticket->new( RT->SystemUser );
+my $ret           = $parent_ticket->Load( $ARGS{ticket_id} );
+unless ( $ret ) {
+    $m->out( JSON( { status => 'error', message => loc( 'Invalid argument [_1]', loc( 'ticket_id' ) ) } ) );
+    $m->abort;
+}
+
+for my $queue_config ( qw/SponsorsQueue FeaturedTicketsQueue/ ) {
+    my $queue = RT::Queue->new( RT->SystemUser );
+    $ret = $queue->Load( RT->Config->Get( $queue_config ) );
+    unless ( $ret ) {
+        RT->Logger->error( "Invalid config $queue_config" );
+        $m->out( JSON( { status => 'error', message => loc( 'Invalid config [_1]', $queue_config ) } ) );
+        $m->abort;
+    }
+}
+
+my $user = RT::User->new( RT->SystemUser );
+( $ret, my $msg ) = $user->LoadOrCreateByEmail(
+    EmailAddress => $ARGS{Email},
+    RealName     => $ARGS{Name},
+    Comments     => 'Autocreated as a sponsor',
+);
+unless ( $ret ) {
+    RT->Logger->error( "Could not create user $ARGS{Email}: $msg" );
+    $m->out( JSON( { status => 'error', message => loc( 'Could not create [_1]', loc( 'User' ) ) } ) );
+    $m->abort;
+}
+
+my $ticket = RT::Ticket->new( RT->SystemUser );
+( $ret, $msg ) = $ticket->Create(
+    Subject => ( $ARGS{Name} || $ARGS{Email} ) . "\'s Sponsor Ticket For: \"" . $parent_ticket->Subject . "\"",
+    Queue                                                                 => RT->Config->Get( 'SponsorsQueue' ),
+    DependedOnBy                                                          => $ARGS{ticket_id},
+    'CustomField-' . $ticket->LoadCustomFieldByIdentifier( 'Amount' )->Id => $ARGS{Amount},
+    Requestor                                                             => $user->EmailAddress,
+);
+
+unless ( $ret ) {
+    RT->Logger->error( "Could not create ticket: $msg" );
+    $m->out( JSON( { status => 'error', message => loc( 'Could not create [_1]', loc( 'Ticket' ) ) } ) );
+    $m->abort;
+}
+
+# Once the ticket is created, I think it's fine to tell user the sponsorship is successful.
+# Maybe the following code should be done in Scrips?
+my $new_amount = $ARGS{Amount} + ( $parent_ticket->FirstCustomFieldValue('Amount') // 0 );
+
+($ret, $msg) = $parent_ticket->AddCustomFieldValue( Field => $parent_ticket->LoadCustomFieldByIdentifier('Amount')->Id, Value => $new_amount );
+RT::Logger->error("Could not update parent ticket Amount: $msg") unless $ret;
+
+if ( $new_amount >= $parent_ticket->FirstCustomFieldValue('Goal') ) {
+    ($ret, $msg) = $parent_ticket->AddCustomFieldValue( Field => $parent_ticket->LoadCustomFieldByIdentifier('Funded')->Id, Value => 'Funded' );
+    RT::Logger->error("Could not update parent ticket Funded: $msg") unless $ret;
+}
+
+($ret, $msg) = $parent_ticket->Comment(
+    Content  => 'New sponsor ' . $ARGS{Email} . ', has committed $' . $ARGS{Amount},
+);
+RT::Logger->error("Could not comment on parent ticket: $msg") unless $ret;
+
+$m->out( JSON( { status => 'success' } ) );
+$m->abort;
 </%init>
