@@ -68,10 +68,10 @@ p.featured-tickets-paragraph {
 
 .featured-tickets-banner {
     background: transparent 
-     url('/static/images/rawpixel-com-250087-unsplash.jpg') 0 0 no-repeat fixed;
+     url('../../../static/images/rawpixel-com-250087-unsplash.jpg') 0 0 no-repeat fixed;
     text-align: center;
     background-size: cover;
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/static/images/rawpixel-com-250087-unsplash.jpg', sizingMethod='scale');
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../../../static/images/rawpixel-com-250087-unsplash.jpg', sizingMethod='scale');
     height: 400px;
     width: 100%;
     margin-bottom: 3em;
