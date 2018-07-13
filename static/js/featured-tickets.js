@@ -8,6 +8,7 @@ function NewSponsor() {
     data = { "Name" : sponsor_name.value, "Email" : email.value, "Amount" : amount.value, "ticket_id" : ticket_id.value };
 
     jQuery('div.featured-tickets-modal div.error').text('').hide();
+    jQuery('.featured-tickets-inputs').addClass('spinner');
 
     jQuery.ajax({
         type: 'POST',
@@ -15,6 +16,7 @@ function NewSponsor() {
         dataType: "json",
         data: data,
         success: function( data ) {
+            jQuery('.featured-tickets-inputs').removeClass('spinner');
             if ( data.status == 'success' ) {
                 // console.log('AJAX call to NewSponsor created new sponsor ticket');
                 jQuery('div.featured-tickets-modal div.error').text('').fadeOut();
