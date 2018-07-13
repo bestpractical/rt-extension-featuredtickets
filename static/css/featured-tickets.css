@@ -214,6 +214,7 @@ p.featured-tickets-paragraph {
 
 .featured-tickets-button-page {
     margin-top: -120px;
+    position: relative;
 }
 
 .featured-tickets-information-head {
