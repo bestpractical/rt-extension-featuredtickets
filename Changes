@@ -1,5 +1,16 @@
 Revision history for RT-Extension-FeaturedTickets
 
+0.04 2018-07-16
+
+ - Consistently use relative urls in css
+ - Update links to respect WebPath
+ - Add spinner to tell user the submission is still going on
+ - Refactor code to validate inputs and show user errors if there are any
+ - Fix the issue of missing "Details" buttons on Safari
+ - Fix js error of "RT is not defined"
+ - Comment out console.log calls for production release
+ - Fix double UTF-8 encoded issue in Details modal
+
 0.03 2018-07-02
  - Update setting of requestor when handling a new sponsor
 
