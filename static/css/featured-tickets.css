@@ -139,6 +139,8 @@ p.featured-tickets-paragraph {
     background: #111;
     color: #fff;
     padding-bottom: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 .pricing-table-header h2 {
     margin: 0;

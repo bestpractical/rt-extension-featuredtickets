@@ -1,5 +1,9 @@
 Revision history for RT-Extension-FeaturedTickets
 
+0.05 2019-09-18
+ - Styling on card headers
+ - Update link to support page
+
 0.04 2018-07-16
 
  - Consistently use relative urls in css
